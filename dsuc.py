@@ -18,15 +18,18 @@ fuzzables = []
 def extractor(soup , host) : 
 	all_links = list()
 	for link in soup.find_all('a' , href = True) :
-		print(link['href'])
 		if link['href'].startswith('/') : 
-			all_links.append(host+link['href'])
+			if link['href'] not in all_links : 
+				all_links.append(host+link['href'])
 		elif host in link['href'] : 
-			all_links.append( link['href'] )
+			if link['href'] not in all_links : 
+				all_links.append( link['href'] )
 		elif 'https://'+host.split('http://')[1] in link['href'] : 
-			all_links.append( link['href'] )
+			if link['href'] not in all_links : 
+				all_links.append( link['href'] )
 		elif 'http' not in link['href'] and 'www' not in link['href'] and len(link['href']) > 2 and '#' not in  link['href'] : 
-			all_links.append(host+'/'+link['href'])
+			if link['href'] not in all_links : 
+				all_links.append(host+'/'+link['href'])
 		elif len (link['href']) > 6 : 
 			external.append( link['href'] )
 		else : 
@@ -65,6 +68,8 @@ parser.add_argument('-f', '--fuzzable', help='extract fuzzable', dest='fuzzable'
 parser.add_argument('-e', '--external', help='extract external', dest='external', action='store_true')
 args = parser.parse_args()
 
+if 'http' not in args.url : 
+	args.url = 'http://' + args.url 
 if args.deepcrawl : 
 	links = level2(xploit(args.url) , args.url)
 	if len(links) > 1 : 
