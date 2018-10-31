@@ -24,9 +24,9 @@ def extractor(soup , host) :
 		elif host in link['href'] : 
 			if link['href'] not in all_links : 
 				all_links.append( link['href'] )
-		elif 'https://'+host.split('http://')[1] in link['href'] : 
-			if link['href'] not in all_links : 
-				all_links.append( link['href'] )
+		elif 'http://' in host : 
+			if 'https://'+host.split('http://')[1] in link['href'] and link['href'] not in all_links: 
+					all_links.append( link['href'] )
 		elif 'http' not in link['href'] and 'www' not in link['href'] and len(link['href']) > 2 and '#' not in  link['href'] : 
 			if link['href'] not in all_links : 
 				all_links.append(host+'/'+link['href'])
@@ -35,6 +35,7 @@ def extractor(soup , host) :
 		else : 
 			unknown.append( link['href'] )
 	return all_links
+	
 	
 def fuzzable_extract(linklist):
 	fuzzables = []
