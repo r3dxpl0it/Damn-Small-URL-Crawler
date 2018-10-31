@@ -60,54 +60,64 @@ def level2(linklist , host) :
 		if link not in final_list : 
 			final_list.append(link)
 	return final_list
-	
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-u', '--url', help='root url', dest='url')
-parser.add_argument('-d', '--deepcrawl', help='crawl deaply', dest='deepcrawl', action='store_true')
-parser.add_argument('-f', '--fuzzable', help='extract fuzzable', dest='fuzzable', action='store_true')
-parser.add_argument('-e', '--external', help='extract external', dest='external', action='store_true')
-args = parser.parse_args()
-
-if 'http' not in args.url : 
-	args.url = 'http://' + args.url 
-if args.deepcrawl : 
-	links = level2(xploit(args.url) , args.url)
-	if len(links) > 1 : 
-		print('\n\n\nLINKS WITH DEEPCRAWL : \n\n\n')
-		for link in links : 
-			print('>\t' , link)
-	else : 
-		print ('\n\n\nNo Link Found\n\n\n')
-else : 
-	links =xploit(args.url)
-	if len(links) > 1 : 
-		print('\n\n\nLINKS : \n\n\n')
-		for link in links : 
-			print('>\t' , link)
-	else : 
-		print ('\n\n\nNo Link Found\n\n\n')
-	
-if args.fuzzable : 
-	if  len(links) > 1 : 
-		if len(fuzzable_extract(links)) > 1 : 
-			print('\n\n\nFUZZABLE LINKS : \n\n\n')
-			for link in fuzzable_extract(links) : 
+def main() : 
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-u', '--url', help='root url', dest='url')
+	parser.add_argument('-d', '--deepcrawl', help='crawl deaply', dest='deepcrawl', action='store_true')
+	parser.add_argument('-f', '--fuzzable', help='extract fuzzable', dest='fuzzable', action='store_true')
+	parser.add_argument('-e', '--external', help='extract external', dest='external', action='store_true')
+	args = parser.parse_args()
+	if args.url is None : 
+		quit()
+	if 'http' not in args.url : 
+		args.url = 'http://' + args.url 
+	if args.deepcrawl : 
+		links = level2(xploit(args.url) , args.url)
+		if len(links) > 1 : 
+			print('\n\nLINKS WITH DEEPCRAWL : \n\n')
+			for link in links : 
 				print('>\t' , link)
 		else : 
-			print ('\n\n\nNo Fuzzable Link Found\n\n\n')
-			
-		
-if args.external : 
-	if  len(external) > 1 : 
-			print('\n\n\nEXTERNAL LINKS : \n\n\n')
-			for link in external : 
-				print('>\t' , link)
+			print ('\n\nNo Link Found\n\n')
 	else : 
-			print ('\n\n\nNo EXTERNAL Link Found\n\n\n')
+		links =xploit(args.url)
+		if len(links) > 1 : 
+			print('\n\nLINKS : \n\n')
+			for link in links : 
+				print('>\t' , link)
+		else : 
+			print ('\n\nNo Link Found\n\n')
+
+	if args.fuzzable : 
+		if  len(links) > 1 : 
+			if len(fuzzable_extract(links)) > 1 : 
+				print('\n\nFUZZABLE LINKS : \n\n')
+				for link in fuzzable_extract(links) : 
+					print('>\t' , link)
+			else : 
+				print ('\n\nNo Fuzzable Link Found\n\n')
+
+
+	if args.external : 
+		if  len(external) > 1 : 
+				print('\n\nEXTERNAL LINKS : \n\n')
+				for link in external : 
+					print('>\t' , link)
+		else : 
+				print ('\n\nNo EXTERNAL Link Found\n\n')
 					
+
+
+if __name__ == "__main__" : 
+	banner = '''
+ _____________________________________________________________________
+|CODED BY > R3DXPLOIT(JIMMY)                                          | |
+|GITHUB > https://github.com/r3dxpl0it                                | |
+|_____________________________________________________________________|/|
+'''
+print(banner) 
+main()
 		
 		
 	
-		
 	
